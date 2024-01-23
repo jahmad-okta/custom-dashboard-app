@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%- title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdn.auth0.com/js/auth0/9.18/auth0.min.js"></script>
+    <script src="js/profileUpdates.js"></script>
+</head>
+
+<body class="d-flex flex-column h-100">
+    <%- include('../partials/navigation'); %>
+        <main class="main">
+            <div class="container rounded bg-white mt-5 mb-5">
+                <div class="row">
+                    <div class="alert alert-warning alert-dismissible fade show d-none" id="profileSuccess"
+                        role="alert">
+                        <strong>Succesfully update the user's profile!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 border-right">
+                        <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img
+                                class="rounded-circle mt-5" width="150px" src="<%- userInfo.picture %>">
+                            <br />
+                            <span class="font-weight-bold">
+                                <%- userInfo.sub %>
+                            </span><span class="text-black-50">
+                                <%- userInfo.email %>
+                            </span><span> </span>
+                        </div>
+                    </div>
+                    <div class="col-md-5 border-right">
+                        <div class="p-3 py-5">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="text-right">Profile Settings</h4>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-6"><label class="labels">Name</label><input type="text"
+                                        class="form-control" id="given_name" placeholder="first name"
+                                        value="<%- userInfo.given_name %>"></div>
+                                <div class="col-md-6"><label class="labels">Surname</label><input type="text"
+                                        class="form-control" id="family_name" value="<%- userInfo.family_name %>"
+                                        placeholder="surname">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text"
+                                        class="form-control" id="mobile_number" placeholder="enter phone number"
+                                        value="<%- userInfo.mobile %>">
+                                </div>
+                                <div class="col-md-12"><label class="labels">Email ID</label><input type="text"
+                                        class="form-control" id="email" placeholder="enter email id"
+                                        value="<%- userInfo.email %>">
+                                </div>
+                                <input class="profile_value" type="text" id="sub" value="<%- userInfo.sub %>"
+                                    style="display: none;">
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center"><button id="btnSubmit" class="btn btn-primary profile-button"
+                                type="button">Update
+                                Profile</button>
+                        </div>
+                    </div>
+                    <div class="col-md-3 border-right">
+                        <h1>Link Accounts</h1>
+                        <% if( linkedAccounts.length===0) { %>
+                            <p>No accounts currently linked</p>
+                            <% } else { %>
+                                <p>Account linked with:</p>
+                                <ul>
+                                    <% linkedAccounts.forEach((account)=> { %>
+                                        <li>
+                                            <%= account %>
+                                        </li>
+                                        <% }) %>
+                                            <% } %>
+                                </ul>
+                                <button class="btn-white-border" id="btnLink">Link with Social
+                                    Providers</button>
+                    </div>
+                </div>
+                <div class="row mt-5 px-5">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Application Name</th>
+                                <th>Client ID</th>
+                                <th>Update</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (var i=0; i < listOfClients.length; i++) { %>
+                                <tr id="<%= listOfClients[i].client_id %>">
+                                    <td>
+                                        <%= listOfClients[i].name %>
+                                    </td>
+                                    <td>
+                                        <%= listOfClients[i].client_id %>
+                                    </td>
+                                    <td><a onclick="clientDelete(this);" href="#">Delete</a></td>
+                                </tr>
+                                <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+        <%- include('../partials/footer'); %>
+</body>
+
+</html>

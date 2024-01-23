@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Title of the document</title>
+    <script src="https://cdn.auth0.com/js/auth0/9.18/auth0.min.js"></script>
+    <script>
+        var hash = window.location.hash;
+        if (hash === '') {
+            var webAuth = new auth0.WebAuth({
+                domain: '<%- auth0Domain %>',
+                clientID: '<%- auth0ClientID %>',
+            });
+            webAuth.authorize({
+                responseType: 'token id_token',
+                redirectUri: window.location.protocol + '//' + window.location.host + '/account-linking',
+                prompt: "login"
+            }, function (err, authResult) {
+            });
+        }
+        else {
+            var rootUserId = "<%- rootUserId %>";
+            const searchParams = new URLSearchParams(hash);
+            const targetUserIDToken = searchParams.get('id_token');
+
+            fetch(`https://<%- auth0Domain %>/api/v2/users/${rootUserId}/identities`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer <%- access_token %>",
+                },
+                body: JSON.stringify({
+                    link_with: targetUserIDToken,
+                }),
+            }).then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response;
+            });
+        }
+
+        function closeWindow() {
+            window.onunload = refreshParent;
+            function refreshParent() {
+                self.opener.refreshByBtn();
+            }
+            window.close();
+        }
+
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="accountLinking_section">
+        <h1>Account is linked!</h1>
+        <p>Please close this window</p>
+
+        <button onclick="closeWindow()">Close</button>
+    </div>
+
+</body>
+
+</html>

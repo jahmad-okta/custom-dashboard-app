@@ -1,0 +1,36 @@
+<header class="py-3">
+    <div class="d-flex justify-content-between mx-5 mt-auto">
+        <h1>Demo Application</h1>
+        <ul class="nav nav-pills col-12 col-lg-auto justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/profile">Profile</a>
+            </li>
+            <% if(!hasSession){ %>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      Login
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="/login">Login</a></li>
+                      <li><a class="dropdown-item" href="/login?connection=sms">Passwordless by SMS</a></li>
+                      <li><a class="dropdown-item" href="/login?connection=email">Passwordless Email</a></li>
+                    </ul>
+                  </div>
+                <!-- <li class="nav-item">
+                    <a class="nav-link active" href="/login">Login</a>
+                </li>  -->
+                <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api-request">API</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/logout">Logout</a>
+                    </li>
+                    <% } %>
+        </ul>
+    </div>
+
+</header>
